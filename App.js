@@ -9,7 +9,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { store } from './redux/store';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+
+
+
+
 
 
 const AuthStack = createNativeStackNavigator();
@@ -24,7 +28,9 @@ const loadApplication = async () => {
 
 export default function App() {
   const [iasReady, setIasReady] = useState(false);
+  const [user, setUser] = useState(null);
 
+  onAuthStateChanged(auth, (user) => setUser(user))
 
   if (!iasReady) {
     return (
@@ -35,7 +41,7 @@ export default function App() {
       />
     );
   }
-  const routing = useRoute(false)
+  const routing = useRoute(user)
 
   return (
     <Provider store={store}>

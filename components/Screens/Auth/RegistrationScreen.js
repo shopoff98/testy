@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { authSignUpUser } from "../../../redux/auth/authOperations";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -34,7 +34,8 @@ export default function RegistrationScreen({ navigation }) {
     const [registrationData, setRegistrationData] = useState(initialState);
     const [isVisiblePass, setIsVisiblePass] = useState(true)
     const window = useWindowDimensions();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
 
 
     const keyboardHide = () => {

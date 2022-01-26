@@ -10,6 +10,7 @@ export const authSignUpUser = createAsyncThunk(
         try {
             const response = await createUserWithEmailAndPassword(auth, mail, password)
             console.log(response)
+            return response
         } catch (error) {
             console.log(error)
         }
