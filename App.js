@@ -1,6 +1,4 @@
 import useRoute from './route';
-import RegistrationScreen from './components/Screens/Auth/RegistrationScreen';
-import LoginScreen from './components/Screens/Auth/LoginScreen';
 import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
@@ -8,6 +6,10 @@ import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { store } from './redux/store';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
+import { Provider } from 'react-redux'
 
 
 const AuthStack = createNativeStackNavigator();
@@ -33,11 +35,13 @@ export default function App() {
       />
     );
   }
-  const routing = useRoute(true)
+  const routing = useRoute(false)
 
   return (
-    <NavigationContainer>
-     {routing}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        {routing}
+      </NavigationContainer>
+    </Provider>
   )
 }

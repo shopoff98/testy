@@ -16,6 +16,8 @@ import {
     useWindowDimensions
 } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import { authSignUpUser } from "../../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -27,11 +29,12 @@ const initialState = {
 
 
 
-export default function RegistrationScreen({navigation}) {
+export default function RegistrationScreen({ navigation }) {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
     const [registrationData, setRegistrationData] = useState(initialState);
     const [isVisiblePass, setIsVisiblePass] = useState(true)
     const window = useWindowDimensions();
+    const dispatch = useDispatch()
 
 
     const keyboardHide = () => {
@@ -41,10 +44,8 @@ export default function RegistrationScreen({navigation}) {
 
 
     function onSubmitForm() {
-        setIsShowKeyboard(false);
-        Keyboard.dismiss();
+        dispatch(authSignUpUser(registrationData))
         setRegistrationData(initialState)
-        console.log(registrationData)
     }
 
     return (
@@ -94,11 +95,11 @@ export default function RegistrationScreen({navigation}) {
                                             ({ ...prevstate, password: value }))
                                     }}
                                 />
-                                <Text onPress={()=>setIsVisiblePass(false)} style={styles.visiblePasswordText}>Показать</Text>
+                                <Text onPress={() => setIsVisiblePass(false)} style={styles.visiblePasswordText}>Показать</Text>
                             </View>
                             <TouchableOpacity style={styles.logInBtn} activeOpacity={0.8} onPress={onSubmitForm}><Text style={styles.btnText}>Зарегистрироваться</Text></TouchableOpacity>
-                            <View style = {styles.haveAccBox}>
-                            <Text style={styles.addOptionBtn}>Уже есть аккаунт?<Text onPress ={() => navigation.navigate("Login")}> Войти</Text></Text>
+                            <View style={styles.haveAccBox}>
+                                <Text style={styles.addOptionBtn}>Уже есть аккаунт?<Text onPress={() => navigation.navigate("Login")}> Войти</Text></Text>
                             </View>
                         </View>
                     </KeyboardAwareScrollView>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         fontSize: 16,
         lineHeight: 19,
-        color:"#1B4371"
+        color: "#1B4371"
     },
 
     haveAccBox: {
