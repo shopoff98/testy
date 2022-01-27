@@ -1,10 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from "firebase/firestore"
+import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const firebaseApp = initializeApp({
     apiKey: "AIzaSyAxXrJlh0wmOHGZq_y0L6seH8hY6PjFYMc",
     authDomain: "goit-app-d0c99.firebaseapp.com",
+    databaseURL: "https://goit-app-d0c99-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "goit-app-d0c99",
     storageBucket: "goit-app-d0c99.appspot.com",
     messagingSenderId: "1057747881513",
