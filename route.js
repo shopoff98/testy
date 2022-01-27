@@ -8,7 +8,11 @@ import ProfileScreen from "./components/Screens/Auth/main/ProfileScreen";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Button, Text } from "react-native";
+import { auth } from "./firebase/config";
+import { signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { authSlice } from "./redux/auth/authReducer";
 
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -19,6 +23,14 @@ const AuthStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function useRoute(isAuth) {
+    const dispatch = useDispatch();
+
+    function signOut() {
+        signOut(auth).then(() => {
+            dispatch(authSlice.actions.signOutUser())
+        }).catch(error => console.log(error))
+    }
+
     if (!isAuth) {
         return (
 
@@ -56,13 +68,15 @@ export default function useRoute(isAuth) {
                         <AntDesign
                             name="appstore-o"
                             size={size} color={focused ? '#fff' : "#212121"} /></View>),
-                    headerRight: () => (<View
-                         style={styles.headerIcon}>
-                             <Feather 
-                             name="log-out" 
-                             size={24} 
-                             color="black" />
-                             </View>),
+                    headerRight: () => (
+                        <Text>Выход</Text>
+                        // <Feather
+                        //     onPress={signOut}
+                        //     name="log-out"
+                        //     size={24}
+                        //     color="black" />
+
+                    ),
                     headerShown: false,
                 }}
                 name="PostsScreen"
@@ -70,34 +84,38 @@ export default function useRoute(isAuth) {
             <Tab.Screen
                 options={{
                     tabBarIcon:
-                     ({ focused, color, size }) =>
-                      (<View 
-                       style={{ ...styles.iconBox, backgroundColor: focused ? 
-                        "#FF6C00" : 
-                        "ffffff" }}>
-                            <AntDesign 
-                            name="plus"
-                             size={size} 
-                             color={focused ? '#fff' : 
-                             "#212121"} />
-                             </View>),
+                        ({ focused, color, size }) =>
+                        (<View
+                            style={{
+                                ...styles.iconBox, backgroundColor: focused ?
+                                    "#FF6C00" :
+                                    "ffffff"
+                            }}>
+                            <AntDesign
+                                name="plus"
+                                size={size}
+                                color={focused ? '#fff' :
+                                    "#212121"} />
+                        </View>),
                 }}
                 name="Создать публикацию"
                 component={CreatePostsScreen} />
             <Tab.Screen
                 options={{
-                    tabBarIcon: 
-                    ({ focused, color, size }) => 
-                    (<View style={{ ...styles.iconBox, backgroundColor: 
-                        focused ? "#FF6C00" :
-                         "ffffff" }}>
-                             <MaterialCommunityIcons 
-                             name="account" 
-                             size={size} 
-                             color={focused ? 
-                                '#fff' : 
-                                "#212121"} />
-                                </View>),
+                    tabBarIcon:
+                        ({ focused, color, size }) =>
+                        (<View style={{
+                            ...styles.iconBox, backgroundColor:
+                                focused ? "#FF6C00" :
+                                    "ffffff"
+                        }}>
+                            <MaterialCommunityIcons
+                                name="account"
+                                size={size}
+                                color={focused ?
+                                    '#fff' :
+                                    "#212121"} />
+                        </View>),
                     title: "Профиль"
                 }}
                 name="ProfileScreen"

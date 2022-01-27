@@ -1,15 +1,10 @@
-import useRoute from './route';
 import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
-import { LogBox } from 'react-native';
-LogBox.ignoreAllLogs();
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { store } from './redux/store';
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/config";
 import { Provider } from 'react-redux';
+import Main from './components/Main';
 
 
 
@@ -28,9 +23,6 @@ const loadApplication = async () => {
 
 export default function App() {
   const [iasReady, setIasReady] = useState(false);
-  const [user, setUser] = useState(null);
-
-  onAuthStateChanged(auth, (user) => setUser(user))
 
   if (!iasReady) {
     return (
@@ -41,13 +33,10 @@ export default function App() {
       />
     );
   }
-  const routing = useRoute(user)
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        {routing}
-      </NavigationContainer>
+      <Main />
     </Provider>
   )
 }

@@ -18,6 +18,10 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { authSignUpUser } from "../../../redux/auth/authOperations";
 import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../../firebase/config";
+import { authSlice } from "../../../redux/auth/authReducer";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signUp } from "../../../redux/auth/authOperations";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -43,10 +47,38 @@ export default function RegistrationScreen({ navigation }) {
         setIsShowKeyboard(false);
     };
 
+    // async function singUp() {
+    //     await createUserWithEmailAndPassword(auth, registrationData.mail, registrationData.password);
+    //     const user = await auth.currentUser;
+    //     await updateProfile(user, {
+    //         displayName: registrationData.login
+    //     })
+
+    //     const updateUserSuccess = await auth.currentUser;
+    //     console.log(updateUserSuccess.uid)
+    //     await dispatch(authSlice.actions.updateUserProfile(updateUserSuccess))
+
+    // }
+
 
     function onSubmitForm() {
         dispatch(authSignUpUser(registrationData))
-        setRegistrationData(initialState)
+        // singUp();
+        // setRegistrationData(initialState);
+
+        // createUserWithEmailAndPassword(auth, registrationData.mail, registrationData.password).
+        //     then((user) => {
+        //         const updateUser = updateProfile(auth.currentUser, {
+        //             displayName: registrationData.login
+        //         })
+        //         return updateUser
+        //     }).then((user) =>
+        //         console.log(user)
+        //         // dispatch(authSlice.actions.updateUserProfile(user))
+        //     ).
+        //     catch(error => console.log(error)).finally(setRegistrationData(initialState))
+
+        // 
     }
 
     return (
