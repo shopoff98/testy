@@ -16,9 +16,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { storage } from "../../../../firebase/config";
+import { storage, db } from "../../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { authSignUpUser } from "../../../../redux/auth/authOperations";
 
 
 export default function CreatePostsScreen({ navigation }) {
@@ -28,6 +31,9 @@ export default function CreatePostsScreen({ navigation }) {
     const [location, setLocation] = useState(null);
     const [name, setName] = useState('');
     const [nameLocation, setNameLocation] = useState('');
+    const [myLocation, setMyLocation] = useState(null);
+    const { userId, nickname } = useSelector(state => state.authSignUp)
+
 
 
     useEffect(() => {
@@ -38,10 +44,8 @@ export default function CreatePostsScreen({ navigation }) {
                 return;
             }
 
-            // const myLocation = await Location.getCurrentPositionAsync();
-            // return myLocation
-            //   setLocation(myLocation.coords);
-            //   console.log(location)
+            const Loc = await Location.getCurrentPositionAsync();
+            setMyLocation(Loc)
         })();
     }, []);
 
@@ -75,15 +79,31 @@ export default function CreatePostsScreen({ navigation }) {
             const storageRef = await ref(storage, `imagesPosts/${uniqueId}`)
             await uploadBytes(storageRef, file)
             const savedPhoto = await getDownloadURL(ref(storage, `imagesPosts/${uniqueId}`));
-            console.log(savedPhoto)
+            return savedPhoto
 
         } catch (error) {
             console.log(error)
         }
+    }
 
+    async function sendPostToServer() {
+        try {
+            const updatePhoto = await uploadPotoToServer();
+            const post = await setDoc(doc(db, "posts", "postId"), {
+                updatePhoto,
+                name,
+                nameLocation,
+                location,
+                userId,
+                nickname
+            })
+            return post
+        } catch (error) {
+            console.log(error)
+        }
     }
     async function sendPost() {
-        await uploadPotoToServer()
+        sendPostToServer();
         await navigation.navigate("Публикации", { location, photo, name, nameLocation })
         resetPost()
     }
