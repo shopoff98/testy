@@ -31,14 +31,13 @@ export default function DefaultScreenPosts({ route, navigation }) {
         await onSnapshot(doc(db, "posts", "postId"), ((doc) => {
             console.log(doc.data())
         }
-
         )
         )
     }
 
     useEffect(() => {
-        getAllPost()
-    }, [route.params])
+        getAllPost();
+    }, [])
     return (
         <View
             style={s.container}>
