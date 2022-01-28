@@ -2,34 +2,12 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
-    onAuthStateChanged
-} from "firebase/auth";
+}
+    from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authSlice } from "./authReducer";
 import { useDispatch } from "react-redux";
-
-// export const authSignUpUser = ({ email, password, nickname }) => async (
-//     dispatch,
-//     getState
-// ) => {
-//     try {
-//         await createUserWithEmailAndPassword(auth, email, password);
-//         const user = await auth.currentUser;
-//         await updateProfile(user, {
-//             displayName: nickname
-//         })
-
-//         const updateUserSuccess = await auth.currentUser;
-//         await dispatch(authSlice.actions.updateUserProfile(updateUserSuccess))
-
-//     } catch (error) {
-//         console.log("error", error);
-
-//         console.log("error.message", error.message);
-//     }
-// };
-
 
 export const authSignUpUser = createAsyncThunk(
     'auth/register',
@@ -42,8 +20,6 @@ export const authSignUpUser = createAsyncThunk(
             })
 
             const updateUserSuccess = await auth.currentUser;
-            console.log(updateUserSuccess.uid)
-            console.log(updateUserSuccess.displayName)
             return updateUserSuccess
 
         } catch (error) {
@@ -54,42 +30,17 @@ export const authSignUpUser = createAsyncThunk(
     }
 )
 
-// export const authSingInUser = createAsyncThunk(
-//     "auth/login",
-//     async ({ mail, password }) => {
-//         try {
-//             const response = await signInWithEmailAndPassword(auth, mail, password)
-//             return response
-//         } catch (error) {
-//             console.log(error)
-//         }
-
-
-//     }
-// )
-
-
-export const authStateChangeUser = createAsyncThunk(
-    'auth/state',
-    async () => {
+export const authSingInUser = createAsyncThunk(
+    "auth/login",
+    async ({ mail, password, nickname }) => {
         try {
-            await onAuthStateChanged(auth, (user => {
-                if (user) {
-                    const userUpdateProfile = {
-                        nickname: user.displayName,
-                        userId: user.uid,
-                        stateChange: true
-                    }
-                    return userUpdateProfile
-                }
-            }
-            ))
-        }
-        catch (error) {
+            const response = await signInWithEmailAndPassword(auth, mail, password)
+            return response
+        } catch (error) {
             console.log(error)
         }
 
 
-
     }
 )
+

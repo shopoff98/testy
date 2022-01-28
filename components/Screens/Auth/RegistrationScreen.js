@@ -128,7 +128,7 @@ export default function RegistrationScreen({ navigation }) {
                                             ({ ...prevstate, password: value }))
                                     }}
                                 />
-                                <Text onPress={() => setIsVisiblePass(false)} style={styles.visiblePasswordText}>Показать</Text>
+                                <Text onPress={() => setIsVisiblePass(!isVisiblePass)} style={styles.visiblePasswordText}>Показать</Text>
                             </View>
                             <TouchableOpacity style={styles.logInBtn} activeOpacity={0.8} onPress={onSubmitForm}><Text style={styles.btnText}>Зарегистрироваться</Text></TouchableOpacity>
                             <View style={styles.haveAccBox}>

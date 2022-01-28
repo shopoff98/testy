@@ -4,39 +4,16 @@ import { getFirestore } from "firebase/firestore"
 import { getStorage } from "firebase/storage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-const firebaseApp = initializeApp({
-    apiKey: "AIzaSyAxXrJlh0wmOHGZq_y0L6seH8hY6PjFYMc",
-    authDomain: "goit-app-d0c99.firebaseapp.com",
-    databaseURL: "https://goit-app-d0c99-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "goit-app-d0c99",
-    storageBucket: "goit-app-d0c99.appspot.com",
-    messagingSenderId: "1057747881513",
-    appId: "1:1057747881513:web:60d83c712ee160b8e6d638"
+export const firebaseApp = initializeApp({
+    apiKey: "AIzaSyBaaRD16n5LmGdzk1pmgvMkcp-4ZNNnU6w",
+    authDomain: "rn-project-d1d6b.firebaseapp.com",
+    databaseURL: "https://rn-project-d1d6b-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "rn-project-d1d6b",
+    storageBucket: "rn-project-d1d6b.appspot.com",
+    messagingSenderId: "29359416787",
+    appId: "1:29359416787:web:f065384ef0b20d137efb26"
 })
 
-
-// const firebaseConfig = {
-//     apiKey: "AIzaSyAxXrJlh0wmOHGZq_y0L6seH8hY6PjFYMc",
-//     authDomain: "goit-app-d0c99.firebaseapp.com",
-//     projectId: "goit-app-d0c99",
-//     storageBucket: "goit-app-d0c99.appspot.com",
-//     messagingSenderId: "1057747881513",
-//     appId: "1:1057747881513:web:60d83c712ee160b8e6d638"
-// };
-
-// Initialize Firebase
-// const Firebase = initializeApp(firebaseConfig);
-
-
+export const storage = getStorage(firebaseApp);
 export const auth = getAuth(firebaseApp);
-// export default Firebase;
 
-export const singUp = async (email, password) => {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        console.log(userCredential)
-    } catch (error) {
-        console.log(error)
-    }
-
-}

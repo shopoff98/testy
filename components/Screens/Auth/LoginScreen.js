@@ -32,6 +32,7 @@ const initialState = {
 export default function LoginScreen({ navigation }) {
     const [isShowKeyboard, setIsShowKeyboard] = useState(false);
     const [registrationData, setRegistrationData] = useState(initialState);
+    const [isVisiblePass, setIsVisiblePass] = useState(true)
     const window = useWindowDimensions();
     const dispatch = useDispatch()
 
@@ -73,7 +74,7 @@ export default function LoginScreen({ navigation }) {
                                     placeholder="Пароль"
                                     onFocus={() => setIsShowKeyboard(true)}
                                     value={registrationData.password}
-                                    secureTextEntry={true}
+                                    secureTextEntry={isVisiblePass}
                                     onChangeText={value => {
                                         setRegistrationData((prevstate) =>
                                             ({ ...prevstate, password: value }))
@@ -82,7 +83,7 @@ export default function LoginScreen({ navigation }) {
                                 <TouchableOpacity
                                     style={styles.visiblePassword}
                                     activeOpacity={0.8}>
-                                    <Text
+                                    <Text onPress={() => setIsVisiblePass(!isVisiblePass)}
                                         style={styles.visiblePasswordText}>
                                         Показать
                                     </Text>
@@ -93,7 +94,7 @@ export default function LoginScreen({ navigation }) {
                                 activeOpacity={0.8}
                                 onPress={onSubmitForm}>
                                 <Text style={styles.btnText}>
-                                    Зарегистрироваться
+                                    Войти
                                 </Text>
                             </TouchableOpacity>
                             <View style={styles.haveAccBox}>

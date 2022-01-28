@@ -16,6 +16,10 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { storage } from "../../../../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { nanoid } from 'nanoid'
+
 
 export default function CreatePostsScreen({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
@@ -24,7 +28,7 @@ export default function CreatePostsScreen({ navigation }) {
     const [location, setLocation] = useState(null);
     const [name, setName] = useState('');
     const [nameLocation, setNameLocation] = useState('');
-    
+
 
     useEffect(() => {
         (async () => {
@@ -34,7 +38,8 @@ export default function CreatePostsScreen({ navigation }) {
                 return;
             }
 
-            //   const myLocation = await Location.getCurrentPositionAsync();
+            // const myLocation = await Location.getCurrentPositionAsync();
+            // return myLocation
             //   setLocation(myLocation.coords);
             //   console.log(location)
         })();
@@ -60,12 +65,26 @@ export default function CreatePostsScreen({ navigation }) {
         setLocation(myLocation.coords);
         const photo = await camera.takePictureAsync();
         setPhoto(photo.uri)
-
-
     }
 
+    async function uploadPotoToServer() {
+        try {
+            const response = await fetch(photo);
+            const file = await response.blob();
+            const uniqueId = nanoid();
+            const storageRef = await ref(storage, `imagesPosts/${uniqueId}`)
+            await uploadBytes(storageRef, file)
+            const savedPhoto = await getDownloadURL(ref(storage, `imagesPosts/${uniqueId}`));
+            console.log(savedPhoto)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     async function sendPost() {
-        navigation.navigate("Публикации", { location, photo, name, nameLocation })
+        await uploadPotoToServer()
+        await navigation.navigate("Публикации", { location, photo, name, nameLocation })
         resetPost()
     }
 
@@ -82,67 +101,67 @@ export default function CreatePostsScreen({ navigation }) {
     return (
         <View style={s.container}>
             <KeyboardAwareScrollView >
-            <View>
-                {photo ?
-                    <View style={s.imageBox}>
-                        <ImageBackground source={{ uri: photo }} style={s.image}>
+                <View>
+                    {photo ?
+                        <View style={s.imageBox}>
+                            <ImageBackground source={{ uri: photo }} style={s.image}>
+                                <TouchableOpacity
+                                    onPress={takePhoto}
+                                    style={{ ...s.photoIcon, backgroundColor: 'rgba(255, 255, 255, 0.3)', }}>
+                                    <MaterialIcons name="photo-camera" size={24} color="#FFFFFF" />
+                                </TouchableOpacity>
+                            </ImageBackground>
+                        </View>
+                        :
+                        <Camera style={s.camera} ref={setCamera}>
                             <TouchableOpacity
                                 onPress={takePhoto}
-                                style={{ ...s.photoIcon, backgroundColor: 'rgba(255, 255, 255, 0.3)', }}>
-                                <MaterialIcons name="photo-camera" size={24} color="#FFFFFF" />
+                                style={{ ...s.photoIcon, backgroundColor: "#fff", }}>
+                                <MaterialIcons
+                                    name="photo-camera" size={24}
+                                    color="#BDBDBD" />
                             </TouchableOpacity>
-                        </ImageBackground>
-                    </View>
-                    :
-                    <Camera style={s.camera} ref={setCamera}>
-                        <TouchableOpacity
-                            onPress={takePhoto}
-                            style={{ ...s.photoIcon, backgroundColor: "#fff", }}>
-                            <MaterialIcons
-                                name="photo-camera" size={24}
-                                color="#BDBDBD" />
-                        </TouchableOpacity>
-                    </Camera>
-                }
-            </View>
-            {photo ? <View>
-                <Text style={s.loadPhotoText}>Редактировать фото</Text>
-            </View> :
-                <View>
-                    <Text style={s.loadPhotoText}>Загрузите фото</Text>
-                </View>}
-            <View style={s.inputBox}><TextInput
-                placeholder="Название..."
-                placeholderTextColor={"#BDBDBD"}
-                value={name}
-                onChangeText={value => {
-                    setName(value)
-                }}
-            ></TextInput>
-            </View>
-            <View style={s.locationInput}>
-                {
-                    <EvilIcons name="location" size={24} color="black" />
-                }
-                <TextInput
-                    style={{ width: "100%" }}
-                    placeholder="Местность..."
+                        </Camera>
+                    }
+                </View>
+                {photo ? <View>
+                    <Text style={s.loadPhotoText}>Редактировать фото</Text>
+                </View> :
+                    <View>
+                        <Text style={s.loadPhotoText}>Загрузите фото</Text>
+                    </View>}
+                <View style={s.inputBox}><TextInput
+                    placeholder="Название..."
                     placeholderTextColor={"#BDBDBD"}
-                    value={nameLocation}
+                    value={name}
                     onChangeText={value => {
-                        setNameLocation(value)
+                        setName(value)
                     }}
-                >
-                </TextInput>
-            </View>
-            <TouchableOpacity
-                onPress={sendPost}
-                style={s.logInBtn}
-                activeOpacity={0.8} >
-                <Text style={s.btnText}>
-                    Опубликовать
-                </Text>
-            </TouchableOpacity>
+                ></TextInput>
+                </View>
+                <View style={s.locationInput}>
+                    {
+                        <EvilIcons name="location" size={24} color="black" />
+                    }
+                    <TextInput
+                        style={{ width: "100%" }}
+                        placeholder="Местность..."
+                        placeholderTextColor={"#BDBDBD"}
+                        value={nameLocation}
+                        onChangeText={value => {
+                            setNameLocation(value)
+                        }}
+                    >
+                    </TextInput>
+                </View>
+                <TouchableOpacity
+                    onPress={sendPost}
+                    style={s.logInBtn}
+                    activeOpacity={0.8} >
+                    <Text style={s.btnText}>
+                        Опубликовать
+                    </Text>
+                </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
 

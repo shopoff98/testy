@@ -1,4 +1,4 @@
-import { authSignUpUser, authStateChangeUser } from "./authOperations";
+import { authSignUpUser, authSignInUser, authSingInUser } from "./authOperations";
 import { createSlice } from "@reduxjs/toolkit";
 
 // export const authSlice = createSlice({
@@ -62,7 +62,21 @@ export const authSlice = createSlice({
         [authSignUpUser.rejected]: (state) => {
             state.loading = false;
             state.error = true;
-        }
+        },
+        // [authSingInUser.fulfilled]: (state, { payload }) => {
+        //     state.userId = payload.uid,
+        //         state.nickname = payload.displayName
+        //     state.loading = false;
+        //     state.error = false;
+        // },
+        // [authSingInUser.pending]: (state) => {
+        //     state.loading = true;
+        //     state.error = false;
+        // },
+        // [authSingInUser.rejected]: (state) => {
+        //     state.loading = false;
+        //     state.error = true;
+        // },
     }
 });
 

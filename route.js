@@ -22,12 +22,13 @@ const HomeStack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export default function useRoute(isAuth) {
+export default function useRoute(isAuth, navigation) {
     const dispatch = useDispatch();
 
     function signOut() {
         signOut(auth).then(() => {
-            dispatch(authSlice.actions.signOutUser())
+            dispatch(authSlice.actions.signOutUser(),
+                navigation.navigate("Login"))
         }).catch(error => console.log(error))
     }
 
