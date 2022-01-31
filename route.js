@@ -3,6 +3,7 @@ import LoginScreen from "./components/Screens/Auth/LoginScreen";
 import RegistrationScreen from "./components/Screens/Auth/RegistrationScreen";
 import CreatePostsScreen from "./components/Screens/Auth/main/CreatePostsScreen";
 import Home from "./components/Screens/Auth/main/Home";
+import DefProfileScreen from './components/Screens/Auth/main/DefProfileScreen'
 import PostsScreen from "./components/Screens/Auth/main/PostsScreen";
 import ProfileScreen from "./components/Screens/Auth/main/ProfileScreen";
 import { AntDesign } from '@expo/vector-icons';
@@ -13,6 +14,7 @@ import { auth } from "./firebase/config";
 import { signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { authSlice } from "./redux/auth/authReducer";
+
 
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -102,7 +104,9 @@ export default function useRoute(isAuth, navigation) {
                 name="Создать публикацию"
                 component={CreatePostsScreen} />
             <Tab.Screen
+
                 options={{
+                    headerShown: false,
                     tabBarIcon:
                         ({ focused, color, size }) =>
                         (<View style={{
@@ -120,7 +124,7 @@ export default function useRoute(isAuth, navigation) {
                     title: "Профиль"
                 }}
                 name="ProfileScreen"
-                component={ProfileScreen} />
+                component={DefProfileScreen} />
         </Tab.Navigator>
     )
 }

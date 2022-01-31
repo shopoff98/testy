@@ -89,7 +89,7 @@ export default function CreatePostsScreen({ navigation }) {
     async function sendPostToServer() {
         try {
             const updatePhoto = await uploadPotoToServer();
-            const post = await setDoc(doc(db, "posts", "postId"), {
+            const post = await addDoc(collection(db, "posts"), {
                 updatePhoto,
                 name,
                 nameLocation,

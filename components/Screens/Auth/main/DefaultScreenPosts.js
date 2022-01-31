@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { onSnapshot, doc } from "firebase/firestore";
+import { onSnapshot, doc, setDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../../firebase/config";
 
 
@@ -28,11 +28,9 @@ export default function DefaultScreenPosts({ route, navigation }) {
     const [posts, setPosts] = useState([]);
 
     async function getAllPost() {
-        await onSnapshot(doc(db, "posts", "postId"), ((doc) => {
-            console.log(doc.data())
-        }
-        )
-        )
+        await onSnapshot(collection(db, "posts"), ((data) =>
+            setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        ))
     }
 
     useEffect(() => {
@@ -47,12 +45,12 @@ export default function DefaultScreenPosts({ route, navigation }) {
                 renderItem={({ item }) =>
                     <View style={s.box}>
                         <View style={s.imageBox}>
-                            <Image source={{ uri: item.photo }} style={s.image} />
+                            <Image source={{ uri: item.updatePhoto }} style={s.image} />
                         </View>
                         <View style={s.title}><Text style={s.titleText}>{item.name}</Text></View>
                         <View style={s.addInfo}>
                             <View style={s.loc}>
-                                <TouchableOpacity onPress={() => navigation.navigate("Comments")}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Comments", { postId: item.id })}>
                                     <EvilIcons
                                         name="comment"
                                         size={24}
