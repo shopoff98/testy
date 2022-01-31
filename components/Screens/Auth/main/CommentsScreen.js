@@ -22,9 +22,10 @@ import { db } from "../../../../firebase/config";
 import { doc, collection, addDoc, onSnapshot } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 
+
 export default function CommentsScreen({ route }) {
-    const [comment, setComment] = useState();
-    const { postId } = route.params;
+    const [comment, setComment] = useState(null);
+    const { postId, updatePhoto } = route.params;
     const { nickname } = useSelector(state => state.authSignUp)
 
     useEffect(() => {
@@ -43,16 +44,22 @@ export default function CommentsScreen({ route }) {
 
 
     return (<View style={s.container}>
-        <FlatList data={comment}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <View><Text>
-                {item.nickname}
-            </Text>
-                <Text>
-                    {item.comment}
-                </Text>
-            </View>
-            } />
+        <View style={s.wrapContent}>
+            <FlatList data={comment}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) =>
+                    <View>
+                        <View style={s.imageBox}>
+                            <Image source={{ uri: updatePhoto }} style={s.image} />
+                        </View>
+                        <View>
+                            <TextInput style={s.inputComment}>
+                                {comment ? item.comment : "Нет коментариев"}
+                            </TextInput>
+                        </View>
+                    </View>
+                } />
+        </View>
         < View style={s.wrap}>
             <TextInput
                 style={s.input}
@@ -70,7 +77,7 @@ export default function CommentsScreen({ route }) {
 const s = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "flex-end",
+        justifyContent: "space-between",
         backgroundColor: "#fff",
         //  alignItems:"center"
     },
@@ -102,5 +109,34 @@ const s = StyleSheet.create({
         borderRadius: 50,
         alignItems: "center",
         justifyContent: "center"
+    },
+    wrapContent: {
+        justifyContent: "flex-start"
+    },
+    imageBox: {
+        marginTop: 32,
+        height: 240,
+        // borderRadius: 8,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 32,
+    },
+
+    image: {
+        // borderStyle: "solid",
+        borderColor: "#E8E8E8",
+        borderWidth: 1,
+        height: 240,
+        overflow: "hidden",
+        borderRadius: 8,
+        width: "100%",
+        justifyContent: "center",
+    },
+    inputComment: {
+        width: 299,
+        height: 100,
+        backgroundColor: 'rgba(0, 0, 0, 0.03)',
+        borderRadius: 6
+
     }
 })

@@ -50,7 +50,8 @@ export default function DefaultScreenPosts({ route, navigation }) {
                         <View style={s.title}><Text style={s.titleText}>{item.name}</Text></View>
                         <View style={s.addInfo}>
                             <View style={s.loc}>
-                                <TouchableOpacity onPress={() => navigation.navigate("Comments", { postId: item.id })}>
+                                <TouchableOpacity onPress={() => navigation.navigate("Comments",
+                                    { postId: item.id, updatePhoto: item.updatePhoto })}>
                                     <EvilIcons
                                         name="comment"
                                         size={24}

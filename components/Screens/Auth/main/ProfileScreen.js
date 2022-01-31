@@ -36,43 +36,49 @@ export default function ProfileScreen({ navigation }) {
         const q = await query(collection(db, "posts"), where("userId", "==", userId));
         await onSnapshot(q, ((data) =>
             setUserPosts(data.docs.map((doc) => (
-                { ...doc.data() }
+                { ...doc.data(), id: doc.id }
             ))))
         )
     }
     return (<View style={s.container}>
-        <FlatList
-            data={userPosts}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) =>
-                <View style={s.box}>
-                    <View style={s.imageBox}>
-                        <Image source={{ uri: item.updatePhoto }} style={s.image} />
-                    </View>
-                    <View style={s.title}><Text style={s.titleText}>{item.name}</Text></View>
-                    <View style={s.addInfo}>
-                        <View style={s.loc}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Comments", { postId: item.id })}>
-                                <EvilIcons
-                                    name="comment"
-                                    size={24}
-                                    color="black" />
-                            </TouchableOpacity>
-                            <Text>0</Text>
+        <ImageBackground style={s.backImage} source={require('../../../../assets/images/bcg-image.jpg')}>
+            <View style={s.form}>
+                <FlatList
+                    data={userPosts}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) =>
+                        <View style={s.box}>
+                            <View style={s.imageBox}>
+                                <Image source={{ uri: item.updatePhoto }} style={s.image} />
+                            </View>
+                            <View style={s.title}><Text style={s.titleText}>{item.name}
+                            </Text>
+                            </View>
+                            <View style={s.addInfo}>
+                                <View style={s.loc}>
+                                    <TouchableOpacity onPress={() => navigation.navigate("Comments", { postId: item.id })}>
+                                        <EvilIcons
+                                            name="comment"
+                                            size={24}
+                                            color="black" />
+                                    </TouchableOpacity>
+                                    <Text>0</Text>
+                                </View>
+                                <View style={s.loc}>
+                                    <TouchableOpacity onPress={() => navigation.navigate("Map", { item })}>
+                                        <EvilIcons
+                                            name="location"
+                                            size={24}
+                                            color="black" />
+                                    </TouchableOpacity>
+                                    <Text>{item.nameLocation}</Text>
+                                </View>
+                            </View>
                         </View>
-                        <View style={s.loc}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Map", { item })}>
-                                <EvilIcons
-                                    name="location"
-                                    size={24}
-                                    color="black" />
-                            </TouchableOpacity>
-                            <Text>{item.nameLocation}</Text>
-                        </View>
-                    </View>
-                </View>
-            }
-        />
+                    }
+                />
+            </View>
+        </ImageBackground>
     </View>)
 }
 
@@ -107,12 +113,14 @@ const s = StyleSheet.create({
     title: {
         marginTop: 8,
         marginBottom: 11,
+
     },
 
     titleText: {
         fontWeight: "500",
         color: "#212121",
         fontSize: 16,
+        lineHeight: 1.18
     },
 
     addInfo: {
@@ -121,6 +129,21 @@ const s = StyleSheet.create({
     },
     loc: {
         flexDirection: "row",
-    }
+    },
+    form: {
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        height: 549,
+        justifyContent: 'center',
+        marginTop: 253,
+
+    },
+
+    backImage: {
+        flex: 1,
+        resizeMode: "cover",
+        justifyContent: "flex-end",
+    },
 
 })

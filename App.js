@@ -16,7 +16,8 @@ const AuthStack = createNativeStackNavigator();
 const loadApplication = async () => {
   await Font.loadAsync({
     "Roboto-Italic": require("./assets/fonts/Roboto-Italic.ttf"),
-    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf")
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf")
 
   });
 };
