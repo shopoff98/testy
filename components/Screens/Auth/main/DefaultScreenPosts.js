@@ -114,8 +114,13 @@ const s = StyleSheet.create({
 
     titleText: {
         fontWeight: "500",
-        color: "#212121",
+        fontFamily: "Roboto-Medium",
+        fontWeight: "500",
         fontSize: 16,
+        lineHeight: 19,
+        letterSpacing: 0.01,
+        color: "#212121",
+        fontStyle: "normal"
     },
 
     addInfo: {

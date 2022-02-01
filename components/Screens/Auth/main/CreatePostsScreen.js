@@ -18,7 +18,9 @@ import * as Location from 'expo-location';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { storage, db } from "../../../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure'
+// import { nanoid } from 'nanoid'
+// import { nanoid } from 'nanoid/async'
 import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { authSignUpUser } from "../../../../redux/auth/authOperations";
@@ -31,7 +33,7 @@ export default function CreatePostsScreen({ navigation }) {
     const [location, setLocation] = useState(null);
     const [name, setName] = useState('');
     const [nameLocation, setNameLocation] = useState('');
-    const [myLocation, setMyLocation] = useState(null);
+    const [myStartLocation, setMyLocation] = useState(null);
     const { userId, nickname } = useSelector(state => state.authSignUp)
 
 

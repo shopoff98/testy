@@ -134,9 +134,11 @@ const s = StyleSheet.create({
     },
     inputComment: {
         width: 299,
-        height: 100,
+        height: 75,
         backgroundColor: 'rgba(0, 0, 0, 0.03)',
-        borderRadius: 6
+        borderRadius: 6,
+        marginLeft: 10,
+
 
     }
 })

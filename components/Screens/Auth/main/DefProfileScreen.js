@@ -42,7 +42,7 @@ export default function DefProfileScreen() {
         <NestedScreen.Navigator
             screenOptions={{ headerTitleAlign: "center", }}>
             <NestedScreen.Screen
-                options={{ headerRight: () => (<TouchableOpacity onPress={signOutUser} style={styles.headerIcon}><Feather name="log-out" size={24} color="black" /></TouchableOpacity>), }}
+                options={{ headerShown: false, headerRight: () => (<TouchableOpacity onPress={signOutUser} style={styles.headerIcon}><Feather name="log-out" size={24} color="black" /></TouchableOpacity>), }}
                 name="Профиль"
                 component={ProfileScreen}
             />
